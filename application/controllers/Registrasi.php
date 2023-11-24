@@ -37,6 +37,7 @@ class Registrasi extends CI_Controller
 			$dataMhs = $this->Models_mahasiswa->getData($nim)->row();
 
 			// ambil tanggal ini hari
+			date_default_timezone_set("Asia/Makassar");
 			$tglNow = date('Y-m-d');
 
 			// Cocokan data (tanggal hari ini dan tanggal sesi mahasiswa)
@@ -46,7 +47,12 @@ class Registrasi extends CI_Controller
 					$this->session->set_flashdata('swetalert', '`Upss!`, `NIM ' . $nim . ', Sudah Melakukan Registrasi`, `error`');
 				} else {
 					// Update Status Mahasiswa
-					$data['status'] = '1';
+					// $data['status'] = '1';
+					$data = [
+						'status' => '1',
+						'wkt_regist' => date('Y-m-d H:i:s'),
+					];
+					
 					$result = $this->Models_mahasiswa->updateData($nim, $data);
 					if ($result) {
 						$this->session->set_flashdata('swetalert', '`Upss!`, `NIM ' . $nim . ', Gagal Registrasi`, `error`');
